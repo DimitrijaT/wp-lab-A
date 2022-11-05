@@ -1,0 +1,21 @@
+1. "/" -> listBalloons.html  (BalloonListServlet)
+2. "/selectBalloon" -> selectBalloonSize.html  (SelectBalloonServlet)
+3. "/BalloonOrder" -> deliveryInfo.html  (BalloonOrderServlet)
+4. "/ConfirmationInfo" -> confirmationInfo.html  (ConfirmationInfoServlet)
+5. "/logout" -> "/"  (LogoutServlet)
+
+
+Dopolnitelno baranje:
+Izbroime i prikazime kolku vkiumno narachki imame napraveno.
+Ovaa informacija treba da se prikaze na sekoja strana.
+Prviot del: izbroime
+Vtoriot del: prikazot
+Tretiot del: na sekoja stranica da se prikaze brojot na narackite.
+
+
+# license server -> activate
+
+#RESPONSE WRAPPER. bonus poen.
+Filter write response after server.
+
+#WEBCONTEXT -> DINAMICKI CONTEXT ZA THYMELEAF
