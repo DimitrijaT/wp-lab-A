@@ -3,7 +3,6 @@ package mk.finki.ukim.mk.lab.web;
 import mk.finki.ukim.mk.lab.model.Order;
 import mk.finki.ukim.mk.lab.model.exceptions.InvalidArgumentsException;
 import mk.finki.ukim.mk.lab.service.OrderService;
-import mk.finki.ukim.mk.lab.service.impl.OrderServiceImpl;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -20,8 +19,11 @@ public class BalloonOrderServlet extends HttpServlet {
 
     private final SpringTemplateEngine springTemplateEngine;
 
-    public BalloonOrderServlet(SpringTemplateEngine springTemplateEngine) {
+    private final OrderService orderService;
+
+    public BalloonOrderServlet(SpringTemplateEngine springTemplateEngine, OrderService orderService) {
         this.springTemplateEngine = springTemplateEngine;
+        this.orderService = orderService;
     }
 
     @Override
@@ -36,13 +38,12 @@ public class BalloonOrderServlet extends HttpServlet {
         // Gi isprakjame ovie 2 parametri:
         String clientName = req.getParameter("clientName");
         String clientAddress = req.getParameter("clientAddress");
-
+        String sizeChosen = req.getSession().getAttribute("sizeChosen").toString();
         String colorChosen = req.getSession().getAttribute("colorChosen").toString();
 
-        OrderService orderService = new OrderServiceImpl();
 
         try {
-            Order order = orderService.placeOrder(colorChosen, clientName, clientAddress);
+            Order order = orderService.placeOrder(colorChosen, sizeChosen, clientName, clientAddress);
         } catch (InvalidArgumentsException ex) {
             WebContext context = new WebContext(req, resp, req.getServletContext());
             context.setVariable("hasError", true);

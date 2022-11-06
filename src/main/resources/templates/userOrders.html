@@ -26,54 +26,36 @@
     <h1>Welcome to our Balloon Shop App</h1>
 </header>
 <main>
-    <h2>Choose balloon color:</h2>
+    <h2>Orders List</h2>
 
-    <form id="selectForm" th:method="POST" th:action="@{/balloons}"></form>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col"></th>
                 <th scope="col">Balloon Color</th>
-                <th scope="col">Description</th>
-                <th scope="col">Manufacturer</th>
-                <th scope="col" colspan="2">Actions</th>
+                <th scope="col">Balloon Size</th>
+                <th scope="col">Client Name</th>
+                <th scope="col">Client Address</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="balloon : ${balloonList}">
-
+            <tr th:each="order : ${orderList}">
                 <td>
-                    <input th:id="${balloon.getId()}" type="radio" name="color" th:value="${balloon.getName()}"
-                           form="selectForm">
+
+                    <th:block th:text="${order.getBalloonColor()} "></th:block>
+
                 </td>
 
                 <td>
-                    <label th:for="${balloon.getId()}">
-                        <th:block th:text="${balloon.getName()} "></th:block>
-                    </label>
-                </td>
-
-
-                <td>
-                    <th:block th:text="(${balloon.getDescription()})"></th:block>
+                    <th:block th:text="(${order.getBalloonSize()})"></th:block>
                 </td>
 
                 <td>
-                    <th:block th:text="(${balloon.getManufacturer().getName()})"></th:block>
+                    <th:block th:text="(${order.getClientName()})"></th:block>
                 </td>
 
                 <td>
-                    <a th:href="@{ '/balloons/edit-form/{id}' (id=${balloon.getId()}) }"
-                       class="btn btn-sm btn-info"><i class="fa fa-trash">Edit</i></a>
-                </td>
-
-
-                <td>
-                    <form th:action="@{ '/balloons/delete/{id}' (id=${balloon.getId()}) }" th:method="DELETE">
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i>
-                        </button>
-                    </form>
+                    <th:block th:text="(${order.getClientAddress()})"></th:block>
                 </td>
 
             </tr>
@@ -82,27 +64,13 @@
         </table>
     </div>
 
-<!--    <div th:if="${session.colorError}" class="error">-->
-<!--        <div th:text="${colorErrorText}"></div>-->
-<!--    </div>-->
-
     <div class="col mb-3">
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <input form="selectForm" type="submit" class="btn btn-block btn-success" th:value="Submit">
+                <a href="/logout" class="btn btn-block btn-dark">Log out</a>
             </div>
         </div>
     </div>
-
-
-    <div class="col mb-3">
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
-                <a href="/balloons/add-form" class="btn btn-block btn-dark">Add new product</a>
-            </div>
-        </div>
-    </div>
-
 
     <br/>
 </main>

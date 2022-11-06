@@ -1,5 +1,7 @@
 package mk.finki.ukim.mk.lab.web.filters;
 
+import org.thymeleaf.context.WebContext;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,16 @@ public class BalloonFilter implements Filter {
 
         String path = request.getServletPath();
 
-        if (!"".equals(path) && !"/listBalloons.css".equals(path) && colorChosen == null) {
+        ServletContext servletContext = request.getServletContext();
+
+        if (servletContext.getAttribute("orderCount") == null) {
+            servletContext.setAttribute("orderCount", 0);
+        }
+
+        if (!path.contains("/balloons") && !"".equals(path) && !"/listBalloons.css".equals(path) && colorChosen == null) {
+//            WebContext webContext = new WebContext(request,response, request.getServletContext());
+//            webContext.setVariable("colorError",true);
+//            webContext.setVariable("colorErrorText","Please enter a value!");
             response.sendRedirect("/");
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
