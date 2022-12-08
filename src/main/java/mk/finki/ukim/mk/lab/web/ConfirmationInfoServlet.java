@@ -17,6 +17,12 @@ public class ConfirmationInfoServlet extends HttpServlet {
 
     public ConfirmationInfoServlet(SpringTemplateEngine springTemplateEngine) {
         this.springTemplateEngine = springTemplateEngine;
+
+//        model.addAttribute("clientName", clientName);
+//        model.addAttribute("clientAddress", clientAddress);
+//        model.addAttribute("clientBrowser", req.getHeader("User-Agent"));
+//        model.addAttribute("clientName", clientName);
+//        model.addAttribute("clientIpAddress", req.getRemoteAddr());
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -18,6 +19,13 @@ public class BalloonController {
 
     private final BalloonService balloonService;
     private final ManufacturerService manufacturerService;
+
+
+    @ModelAttribute
+    public void addManufacturers(Model model) {
+        List<Manufacturer> manufacturers = this.manufacturerService.findAll();
+        model.addAttribute("manufacturers", manufacturers);
+    }
 
     public BalloonController(BalloonService balloonService, ManufacturerService manufacturerService) {
         this.balloonService = balloonService;
@@ -48,20 +56,14 @@ public class BalloonController {
 
     @GetMapping("/add-form")
     public String getAddBalloonPage(Model model) {
-        List<Manufacturer> manufacturers = this.manufacturerService.findAll();
-        model.addAttribute("manufacturers", manufacturers);
         return "add-balloon";
     }
 
     @GetMapping("/edit-form/{id}")
     public String getEditBalloonPage(@PathVariable Long id, Model model) {
         if (this.balloonService.findById(id).isPresent()) {
-
             Balloon balloon = this.balloonService.findById(id).get();
-            List<Manufacturer> manufacturers = this.manufacturerService.findAll();
-            model.addAttribute("manufacturers", manufacturers);
             model.addAttribute("balloon", balloon);
-
             return "add-balloon";
         }
         return "redirect:/balloons?error=BalloonNotFound";
@@ -70,11 +72,8 @@ public class BalloonController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteBalloon(@PathVariable Long id) {
-
         this.balloonService.deleteById(id);
         return "redirect:/balloons";
-
     }
-
 
 }

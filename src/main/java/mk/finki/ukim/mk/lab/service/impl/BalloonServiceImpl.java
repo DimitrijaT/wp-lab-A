@@ -5,13 +5,16 @@ import mk.finki.ukim.mk.lab.model.Balloon;
 import mk.finki.ukim.mk.lab.model.Manufacturer;
 import mk.finki.ukim.mk.lab.model.exceptions.InvalidArgumentsException;
 import mk.finki.ukim.mk.lab.model.exceptions.ManufacturerNotFoundException;
-import mk.finki.ukim.mk.lab.repository.BalloonRepository;
-import mk.finki.ukim.mk.lab.repository.ManufacturerRepository;
+import mk.finki.ukim.mk.lab.repository.jpa.BalloonRepository;
+import mk.finki.ukim.mk.lab.repository.jpa.ManufacturerRepository;
 import mk.finki.ukim.mk.lab.service.BalloonService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class BalloonServiceImpl implements BalloonService {
@@ -26,7 +29,7 @@ public class BalloonServiceImpl implements BalloonService {
 
     @Override
     public List<Balloon> listAll() {
-        return balloonRepository.findAllBalloons();
+        return balloonRepository.findAll();
     }
 
     @Override
@@ -34,19 +37,23 @@ public class BalloonServiceImpl implements BalloonService {
         if (text == null || text.isEmpty()) {
             throw new InvalidArgumentsException();
         }
-        return balloonRepository.findAllByNameOrDescription(text);
+        return this.balloonRepository.findAllByNameOrDescription(text, text);
     }
 
     @Override
     public boolean deleteById(Long id) {
-        return balloonRepository.deleteById(id);
+        this.balloonRepository.deleteById(id);
+        return balloonRepository.findById(id).isEmpty();
     }
 
     @Override
+    @Transactional
     public Optional<Balloon> save(String name, String description, Long id) {
         Manufacturer manufacturer = this.manufacturerRepository.findById(id).orElseThrow(() -> new ManufacturerNotFoundException(id));
-        return this.balloonRepository.save(name, description, manufacturer);
+        this.balloonRepository.deleteByName(name);
+        return Optional.of(this.balloonRepository.save(new Balloon(name, description, manufacturer)));
     }
+
 
     public Optional<Balloon> findById(Long id) {
         return balloonRepository.findById(id);

@@ -26,6 +26,21 @@
     <h1>Welcome to our Balloon Shop App</h1>
 </header>
 <main>
+
+
+    <form th:method="GET" th:action="@{/orders}">
+
+        <label for="dateFrom">From:</label><br/>
+        <input type="datetime-local" id="dateFrom" name="dateFrom"/><br/>
+
+        <label for="dateTo">To:</label><br/>
+        <input type="datetime-local" id="dateTo" name="dateTo"/>
+
+        <input type="submit" th:value="Submit">
+
+    </form>
+
+
     <h2>Orders List</h2>
 
     <div class="table-responsive">
@@ -34,8 +49,9 @@
             <tr>
                 <th scope="col">Balloon Color</th>
                 <th scope="col">Balloon Size</th>
-                <th scope="col">Client Name</th>
-                <th scope="col">Client Address</th>
+                <th scope="col">Date</th>
+                <!--                <th scope="col">Client Address</th>-->
+                <!--                <th scope="col">Local Date Time</th>-->
             </tr>
             </thead>
             <tbody>
@@ -50,12 +66,16 @@
                     <th:block th:text="(${order.getBalloonSize()})"></th:block>
                 </td>
 
-                <td>
-                    <th:block th:text="(${order.getClientName()})"></th:block>
-                </td>
+                <!--                <td>-->
+                <!--                    <th:block th:text="(${order.getClientName()})"></th:block>-->
+                <!--                </td>-->
+
+                <!--                <td>-->
+                <!--                    <th:block th:text="(${order.getClientAddress()})"></th:block>-->
+                <!--                </td>-->
 
                 <td>
-                    <th:block th:text="(${order.getClientAddress()})"></th:block>
+                    <th:block th:text="(${order.getDateCreated()})"></th:block>
                 </td>
 
             </tr>

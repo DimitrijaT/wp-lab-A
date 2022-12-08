@@ -28,10 +28,9 @@ public class BalloonListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        ServletContext servletContext = getServletContext();
-
         context.setVariable("balloonList", this.balloonService.listAll());
 
+        ServletContext servletContext = getServletContext();
         if (servletContext.getAttribute("orderCount") == null) {
             servletContext.setAttribute("orderCount", 0);
         }
