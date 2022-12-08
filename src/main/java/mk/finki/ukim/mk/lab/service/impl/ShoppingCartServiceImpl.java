@@ -14,6 +14,7 @@ import mk.finki.ukim.mk.lab.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,9 +55,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart addOrderToShoppingCart(String username, Long orderId) {
         ShoppingCart shoppingCart = this.getActiveShoppingCart(username);
         Order order = this.orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(orderId));
-        if (shoppingCart.getOrders().stream().filter(i -> i.getOrderId().equals(orderId)).toList().size() > 0)
-            throw new OrderAlreadyInShoppingCartException(orderId, username);
-        shoppingCart.getOrders().add(order);
+        if (shoppingCart.getOrders() == null) {
+            shoppingCart.getOrders().add(order);
+        } else {
+            if (shoppingCart.getOrders().stream().filter(i -> i.getOrderId().equals(orderId)).toList().size() > 0)
+                throw new OrderAlreadyInShoppingCartException(orderId, username);
+            shoppingCart.getOrders().add(order);
+        }
         return this.shoppingCartRepository.save(shoppingCart);
     }
 }

@@ -1,6 +1,7 @@
 package mk.finki.ukim.mk.lab.service.impl;
 
 import mk.finki.ukim.mk.lab.model.User;
+import mk.finki.ukim.mk.lab.model.UserFullname;
 import mk.finki.ukim.mk.lab.model.exceptions.InvalidArgumentsException;
 import mk.finki.ukim.mk.lab.model.exceptions.InvalidUserCredentialsException;
 import mk.finki.ukim.mk.lab.model.exceptions.PasswordsDoNotMatchException;
@@ -41,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
             throw new PasswordsDoNotMatchException();
         if (this.userRepository.findByUsername(username).isPresent() || !this.userRepository.findByUsername(username).isEmpty())
             throw new UsernameAlreadyExistsException(username);
-        User user = new User(username, name, surname, password, dateOfBirth);
+        User user = new User(username, new UserFullname(name, surname), password, dateOfBirth);
         return userRepository.save(user);
     }
 }
