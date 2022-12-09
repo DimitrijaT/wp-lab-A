@@ -11,6 +11,7 @@ import mk.finki.ukim.mk.lab.service.AuthService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Service
@@ -45,4 +46,11 @@ public class AuthServiceImpl implements AuthService {
         User user = new User(username, new UserFullname(name, surname), password, dateOfBirth);
         return userRepository.save(user);
     }
+
+    @Override
+    public List<User> listAllUsers() {
+        return userRepository.findAll();
+    }
+
+
 }

@@ -64,4 +64,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         return this.shoppingCartRepository.save(shoppingCart);
     }
+
+    @Override
+    public List<Order> listAllOrdersByUser(String username) {
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        ShoppingCart shoppingCart = this.shoppingCartRepository
+                .findByUser(user).get();
+        return this.shoppingCartRepository.findById(shoppingCart.getId()).get().getOrders();
+    }
 }

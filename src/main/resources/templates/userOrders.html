@@ -40,6 +40,22 @@
 
     </form>
 
+    <form th:method="GET" th:action="@{/orders}">
+
+        <select name="username" class="form-control">
+            <option th:if="${user} != null"
+                    th:each="user : ${userList}"
+                    th:value="${user.getUsername()}"
+                    th:text="${user.getUserFullname().getName().toString()}">
+            </option>
+        </select>
+
+<!--        th:selected="${balloon.getManufacturer() != null && balloon.getManufacturer().getId() == man.getId()}"-->
+
+        <input type="submit" th:value="Submit">
+
+    </form>
+
 
     <h2>Orders List</h2>
 

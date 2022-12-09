@@ -19,3 +19,10 @@ Tretiot del: na sekoja stranica da se prikaze brojot na narackite.
 Filter write response after server.
 
 #WEBCONTEXT -> DINAMICKI CONTEXT ZA THYMELEAF
+
+
+
+
+Dopolnitelno baranje:
+
+Orderite da se filtriraat spored user!!!

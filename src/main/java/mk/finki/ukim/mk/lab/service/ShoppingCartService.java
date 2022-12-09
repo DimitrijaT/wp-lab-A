@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface ShoppingCartService {
 
-    public ShoppingCart getActiveShoppingCart(String username);
+    ShoppingCart getActiveShoppingCart(String username);
 
-    public List<Order> listAllOrdersInShoppingCart(Long cartId);
+    List<Order> listAllOrdersInShoppingCart(Long cartId);
 
-    public ShoppingCart addOrderToShoppingCart(String username, Long productId);
+    ShoppingCart addOrderToShoppingCart(String username, Long productId);
+
+    List<Order> listAllOrdersByUser(String username);
 }
