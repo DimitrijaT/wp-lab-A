@@ -1,3 +1,16 @@
-<header>
-    <h1>Welcome to our Balloon Shop App</h1>
-</header>
+<nav class="navbar navbar-light d-flex align-items-center">
+    <a href="/balloons"><h1 class="text-center text-primary navbar-brand">🎈Balloon Shop App
+    </h1></a>
+    <div>
+        <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-light btn-sm ml-3" href="/logout">
+                <i class="fa fa-shopping-cart"></i> Logout
+            </a>
+        </div>
+        <div sec:authorize="!isAuthenticated()">
+            <a class="btn btn-light btn-sm ml-3" href="/login">
+                <i class="fa fa-shopping-cart"></i> Login
+            </a>
+        </div>
+    </div>
+</nav>

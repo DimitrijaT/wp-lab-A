@@ -1,6 +1,6 @@
 <section xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <div class="d-flex justify-content-center">
-        <h2>Order confirmation:</h2>
+        <h2>Order confirmation</h2>
     </div>
     <table class="table">
         <tr>
@@ -55,7 +55,7 @@
 
         <a type="button" href="/orders" class="btn btn-success">See all orders</a>
 
-        <a type="button" href="/logout" class="btn btn-danger">Log out</a>
+<!--        <a sec:authorize="!isAuthenticated()" type="button" href="/logout" class="btn btn-danger">Log out</a>-->
 
     </div>
 

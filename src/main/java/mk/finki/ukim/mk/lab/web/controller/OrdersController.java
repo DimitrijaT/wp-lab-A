@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,7 +24,6 @@ import java.util.List;
 public class OrdersController {
     private final OrderService orderService;
     private final ShoppingCartService shoppingCartService;
-
     private final AuthService authService;
 
     public OrdersController(OrderService orderService, ShoppingCartService shoppingCartService, AuthService authService) {
@@ -36,26 +36,36 @@ public class OrdersController {
     public String getOrdersPage(@RequestParam(name = "dateFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
                                 @RequestParam(name = "dateTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTo,
                                 @RequestParam(name = "username", required = false) String username,
-                                Model model, HttpServletRequest req) {
+                                Model model,
+                                HttpServletRequest req) {
 
-        User user = (User) req.getSession().getAttribute("user");
-        ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getUsername());
-        List<Order> orderList = null;
 
-        if (username != null) {
-            orderList = this.shoppingCartService.listAllOrdersByUser(username);
-        }
-        else if (dateFrom == null || dateTo == null) {
-            orderList = this.shoppingCartService.listAllOrdersInShoppingCart(shoppingCart.getId());
-        } else
-            orderList = this.orderService.listAllOrdersBetween(dateFrom, dateTo);
+        String loggedUsername = req.getRemoteUser();
+        List<Order> orderList;
+
+        if (dateFrom != null && dateTo != null)
+            orderList = listOrdersBetween(dateFrom, dateTo);
+        else if (username != null)
+            orderList = listChosenUserShoppingCart(username);
+        else
+            orderList = listChosenUserShoppingCart(loggedUsername);
 
         model.addAttribute("orderList", orderList);
-
         model.addAttribute("userList", this.authService.listAllUsers());
-
-        model.addAttribute("bodyContent","userOrders");
+        model.addAttribute("bodyContent", "userOrders");
         return "master-template";
     }
+
+
+    public List<Order> listOrdersBetween(LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return this.orderService.listAllOrdersBetween(dateFrom, dateTo);
+    }
+
+    public List<Order> listChosenUserShoppingCart(String loggedUsername) {
+        if (loggedUsername == null || loggedUsername.isEmpty())
+            return this.shoppingCartService.listAllOrders();
+        return this.shoppingCartService.listAllOrdersByUser(loggedUsername);
+    }
+
 
 }

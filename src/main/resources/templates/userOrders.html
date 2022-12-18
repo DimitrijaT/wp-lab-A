@@ -1,6 +1,5 @@
 <th:block xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <main>
-
         <div class="container">
             <div class="row">
                 <div class="col-sm">
@@ -24,6 +23,8 @@
                             <label>
                                 Choose a user:
                                 <select name="username" class="form-control">
+<!--                                    <option th:value="" th:text="-">-->
+<!--                                    </option>-->
                                     <option th:if="${user} != null"
                                             th:each="user : ${userList}"
                                             th:value="${user.getUsername()}"
@@ -65,7 +66,7 @@
             </table>
         </div>
 
-        <div class="col mb-3">
+        <div class="col mb-3" sec:authorize="isAuthenticated()">
             <div class="row">
                 <div class="col-sm-12 col-md-12">
                     <a href="/logout" class="btn btn-block btn-danger">Log out</a>

@@ -14,4 +14,6 @@ public interface ShoppingCartService {
     ShoppingCart addOrderToShoppingCart(String username, Long productId);
 
     List<Order> listAllOrdersByUser(String username);
+
+    List<Order> listAllOrders();
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -72,5 +73,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = this.shoppingCartRepository
                 .findByUser(user).get();
         return this.shoppingCartRepository.findById(shoppingCart.getId()).get().getOrders();
+    }
+
+    @Override
+    public List<Order> listAllOrders() {
+        return shoppingCartRepository.findAll()
+                .stream()
+                .flatMap(x -> x.getOrders().stream())
+                .collect(Collectors.toList());
     }
 }

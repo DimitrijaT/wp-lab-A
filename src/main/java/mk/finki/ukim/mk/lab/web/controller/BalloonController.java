@@ -5,6 +5,7 @@ import mk.finki.ukim.mk.lab.model.Balloon;
 import mk.finki.ukim.mk.lab.model.Manufacturer;
 import mk.finki.ukim.mk.lab.service.BalloonService;
 import mk.finki.ukim.mk.lab.service.ManufacturerService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,8 @@ public class BalloonController {
         return "redirect:/selectBalloon";
     }
 
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
     public String saveBalloon(@RequestParam String balloonName,
                               @RequestParam String balloonDescription,
@@ -55,23 +58,27 @@ public class BalloonController {
         return "redirect:/balloons";
     }
 
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/add-form")
     public String getAddBalloonPage(Model model) {
         model.addAttribute("bodyContent","add-balloon");
         return "master-template";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/edit-form/{id}")
     public String getEditBalloonPage(@PathVariable Long id, Model model) {
         if (this.balloonService.findById(id).isPresent()) {
             Balloon balloon = this.balloonService.findById(id).get();
             model.addAttribute("balloon", balloon);
-            return "add-balloon";
+            model.addAttribute("bodyContent","add-balloon");
+            return "master-template";
         }
         return "redirect:/balloons?error=BalloonNotFound";
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/delete/{id}")
     public String deleteBalloon(@PathVariable Long id) {
         this.balloonService.deleteById(id);

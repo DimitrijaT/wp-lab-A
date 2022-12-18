@@ -16,7 +16,6 @@ public class ConfirmationInfoController {
     public String getConfirmationInfo(HttpServletRequest req, Model model) {
 
         model.addAttribute("clientBrowser", req.getHeader("User-Agent"));
-//        model.addAttribute("clientName", clientName);
         model.addAttribute("clientIpAddress", req.getRemoteAddr());
 
         model.addAttribute("bodyContent", "confirmationInfo");
