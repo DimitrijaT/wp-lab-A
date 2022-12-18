@@ -36,7 +36,8 @@ public class BalloonController {
     public String getBalloonsPage(@RequestParam(required = false) String error, Model model) {
         List<Balloon> balloons = this.balloonService.listAll();
         model.addAttribute("balloonList", balloons);
-        return "listBalloons";
+        model.addAttribute("bodyContent","listBalloons");
+        return "master-template";
     }
 
     @PostMapping
@@ -56,7 +57,8 @@ public class BalloonController {
 
     @GetMapping("/add-form")
     public String getAddBalloonPage(Model model) {
-        return "add-balloon";
+        model.addAttribute("bodyContent","add-balloon");
+        return "master-template";
     }
 
     @GetMapping("/edit-form/{id}")

@@ -1,59 +1,51 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>Balloon Order page - Balloon Size</title>
-    <style type="text/css">
-        body {
-            width: 800px;
-            margin: auto;
-        }
-
-        table {
-            width: 100%;
-        }
-
-        table, td, th {
-            border: 1px solid black;
-            padding: 3px 2px;
-        }
-
-        section {
-            float: left;
-            margin: 0 1.5%;
-            width: 63%;
-        }
-
-        aside {
-            float: right;
-            margin: 0 1.5%;
-            width: 30%;
-        }
-    </style>
-</head>
-<body>
-<header>
-    <h1>Balloon Order page - Select Balloon Size </h1>
-</header>
-<section>
+<div class="d-flex justify-content-center">
+    <h2>Choose balloon size:</h2>
+</div>
+<section xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <h2>Choose balloon size:</h2>
     <form th:method="POST" th:action="@{/selectBalloon}">
 
-        <input type="radio" name="size" value="Small"> Small <br/>
-        <input type="radio" name="size" value="Medium"> Medium <br/>
-        <input type="radio" name="size" value="Big"> Big <br/>
-        <input type="radio" name="size" value="Extra Big"> Extra Big <br/>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" value="Small" id="Small">
+            <label class="form-check-label" for="Small">
+                Small
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" value="Medium" id="Medium">
+            <label class="form-check-label" for="Medium">
+                Medium
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" value="Big" id="Big">
+            <label class="form-check-label" for="Big">
+                Big
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" value="Extra Big" id="Extra Big">
+            <label class="form-check-label" for="Extra Big">
+                Extra Big
+            </label>
+        </div>
 
-        <input type="submit" th:value="Submit">
+        <input class="btn btn-success" type="submit" th:value="Submit">
     </form>
+
+
     <br/>
 </section>
 <aside>
-    <table>
+    <table class="table">
+        <thead>
         <tr>
-            <th colspan="2">
+            <th scope="col" colspan="2">
                 Your Order Status
             </th>
         </tr>
+        </thead>
+        <tbody>
         <tr>
             <td><b>Balloon Type </b></td>
             <td>
@@ -67,8 +59,6 @@
                 <th:block th:text="${#servletContext.getAttribute('orderCount')}"></th:block>
             </td>
         </tr>
+        </tbody>
     </table>
 </aside>
-
-</body>
-</html>

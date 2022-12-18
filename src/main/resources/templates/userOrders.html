@@ -1,114 +1,77 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="">
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    <title>Balloon Order page - Welcome and choose a Balloon</title>
-    <style type="text/css">
-        body {
-            width: 800px;
-            margin: auto;
-        }
-    </style>
-    <link rel="stylesheet" href="/listBalloons.css">
-</head>
-<body>
-<header>
-    <h1>Welcome to our Balloon Shop App</h1>
-</header>
-<main>
+<th:block xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <main>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
 
-    <form th:method="GET" th:action="@{/orders}">
+                    <form th:method="GET" th:action="@{/orders}">
+                        <div class="form-group">
+                            <label for="dateFrom">From:</label>
+                            <input type="datetime-local" id="dateFrom" name="dateFrom" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateTo">To:</label>
+                            <input type="datetime-local" id="dateTo" name="dateTo" class="form-control"/>
+                        </div>
+                        <input type="submit" th:value="Submit" class="btn btn-success">
+                    </form>
+                </div>
 
-        <label for="dateFrom">From:</label><br/>
-        <input type="datetime-local" id="dateFrom" name="dateFrom"/><br/>
-
-        <label for="dateTo">To:</label><br/>
-        <input type="datetime-local" id="dateTo" name="dateTo"/>
-
-        <input type="submit" th:value="Submit">
-
-    </form>
-
-    <form th:method="GET" th:action="@{/orders}">
-
-        <select name="username" class="form-control">
-            <option th:if="${user} != null"
-                    th:each="user : ${userList}"
-                    th:value="${user.getUsername()}"
-                    th:text="${user.getUserFullname().getName().toString()}">
-            </option>
-        </select>
-
-<!--        th:selected="${balloon.getManufacturer() != null && balloon.getManufacturer().getId() == man.getId()}"-->
-
-        <input type="submit" th:value="Submit">
-
-    </form>
-
-
-    <h2>Orders List</h2>
-
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Balloon Color</th>
-                <th scope="col">Balloon Size</th>
-                <th scope="col">Date</th>
-                <!--                <th scope="col">Client Address</th>-->
-                <!--                <th scope="col">Local Date Time</th>-->
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="order : ${orderList}">
-                <td>
-
-                    <th:block th:text="${order.getBalloonColor()} "></th:block>
-
-                </td>
-
-                <td>
-                    <th:block th:text="(${order.getBalloonSize()})"></th:block>
-                </td>
-
-                <!--                <td>-->
-                <!--                    <th:block th:text="(${order.getClientName()})"></th:block>-->
-                <!--                </td>-->
-
-                <!--                <td>-->
-                <!--                    <th:block th:text="(${order.getClientAddress()})"></th:block>-->
-                <!--                </td>-->
-
-                <td>
-                    <th:block th:text="(${order.getDateCreated()})"></th:block>
-                </td>
-
-            </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-    <div class="col mb-3">
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
-                <a href="/logout" class="btn btn-block btn-dark">Log out</a>
+                <div class="col-sm d-flex align-items-end">
+                    <form th:method="GET" th:action="@{/orders}">
+                        <div class="form-group d-flex align-items-end">
+                            <label>
+                                Choose a user:
+                                <select name="username" class="form-control">
+                                    <option th:if="${user} != null"
+                                            th:each="user : ${userList}"
+                                            th:value="${user.getUsername()}"
+                                            th:text="${user.getUserFullname().getName().toString()}">
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+                        <input type="submit" th:value="Submit" class="btn btn-success">
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <br/>
-</main>
-</body>
-</html>
+        <h2>Orders List</h2>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Balloon Color</th>
+                    <th scope="col">Balloon Size</th>
+                    <th scope="col">Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orderList}">
+                    <td>
+                        <th:block th:text="${order.getBalloonColor()} "></th:block>
+                    </td>
+                    <td>
+                        <th:block th:text="(${order.getBalloonSize()})"></th:block>
+                    </td>
+                    <td>
+                        <th:block th:text="(${order.getDateCreated()})"></th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col mb-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <a href="/logout" class="btn btn-block btn-danger">Log out</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</th:block>

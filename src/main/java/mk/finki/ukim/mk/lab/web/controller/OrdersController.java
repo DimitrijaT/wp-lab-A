@@ -54,7 +54,8 @@ public class OrdersController {
 
         model.addAttribute("userList", this.authService.listAllUsers());
 
-        return "userOrders";
+        model.addAttribute("bodyContent","userOrders");
+        return "master-template";
     }
 
 }

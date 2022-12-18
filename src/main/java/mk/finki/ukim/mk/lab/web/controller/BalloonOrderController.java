@@ -6,6 +6,7 @@ import mk.finki.ukim.mk.lab.service.OrderService;
 import mk.finki.ukim.mk.lab.service.ShoppingCartService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +28,9 @@ public class BalloonOrderController {
     }
 
     @GetMapping
-    public String getBalloonOrderPage() {
-        return "deliveryInfo";
+    public String getBalloonOrderPage(Model model) {
+        model.addAttribute("bodyContent","deliveryInfo");
+        return "master-template";
     }
 
     @PostMapping
@@ -39,6 +41,8 @@ public class BalloonOrderController {
 
         String sizeChosen = req.getSession().getAttribute("sizeChosen").toString();
         String colorChosen = req.getSession().getAttribute("colorChosen").toString();
+        req.getSession().setAttribute("clientName",clientName);
+        req.getSession().setAttribute("clientAddress",clientAddress);
 
 
         Order order = this.orderService.placeOrder(sizeChosen, colorChosen, dateCreated);
