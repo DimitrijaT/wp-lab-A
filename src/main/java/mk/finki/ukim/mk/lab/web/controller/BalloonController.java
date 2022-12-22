@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -37,7 +36,7 @@ public class BalloonController {
     public String getBalloonsPage(@RequestParam(required = false) String error, Model model) {
         List<Balloon> balloons = this.balloonService.listAll();
         model.addAttribute("balloonList", balloons);
-        model.addAttribute("bodyContent","listBalloons");
+        model.addAttribute("bodyContent", "listBalloons");
         return "master-template";
     }
 
@@ -51,10 +50,17 @@ public class BalloonController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
-    public String saveBalloon(@RequestParam String balloonName,
-                              @RequestParam String balloonDescription,
-                              @RequestParam Long manufacturerId) {
-        this.balloonService.save(balloonName, balloonDescription, manufacturerId);
+    public String saveBalloon(
+            @RequestParam(required = false) Long balloonId,
+            @RequestParam String balloonName,
+            @RequestParam String balloonDescription,
+            @RequestParam Long manufacturerId) {
+        if (balloonId != null) {
+            this.balloonService.edit(balloonId, balloonName, balloonDescription, manufacturerId);
+        } else {
+            this.balloonService.save(balloonName, balloonDescription, manufacturerId);
+        }
+
         return "redirect:/balloons";
     }
 
@@ -62,7 +68,7 @@ public class BalloonController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/add-form")
     public String getAddBalloonPage(Model model) {
-        model.addAttribute("bodyContent","add-balloon");
+        model.addAttribute("bodyContent", "add-balloon");
         return "master-template";
     }
 
@@ -72,7 +78,7 @@ public class BalloonController {
         if (this.balloonService.findById(id).isPresent()) {
             Balloon balloon = this.balloonService.findById(id).get();
             model.addAttribute("balloon", balloon);
-            model.addAttribute("bodyContent","add-balloon");
+            model.addAttribute("bodyContent", "add-balloon");
             return "master-template";
         }
         return "redirect:/balloons?error=BalloonNotFound";

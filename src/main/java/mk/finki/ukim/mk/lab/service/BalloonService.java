@@ -14,7 +14,10 @@ public interface BalloonService {
 
     boolean deleteById(Long id);
 
-    Optional<Balloon> save(String name, String description, Long id);
+    Optional<Balloon> edit(Long balloonId, String name, String description, Long manufacturerId);
+
+    Optional<Balloon> save(String name, String description, Long manufacturerId);
+
 
     Optional<Balloon> findById(Long id);
 }

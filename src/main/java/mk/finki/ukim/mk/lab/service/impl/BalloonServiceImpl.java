@@ -53,15 +53,28 @@ public class BalloonServiceImpl implements BalloonService {
             throw new NoBalloonNameException();
         if (description == null || description.isEmpty())
             throw new NoBalloonDescriptionException();
-
-
-//        Manufacturer manufacturer = this.manufacturerRepository.findById(manufacturerId).orElseThrow(() -> new ManufacturerNotFoundException(manufacturerId));
-
         Manufacturer manufacturer = this.manufacturerRepository.findById(manufacturerId).orElseThrow(ManufacturerNotFoundException::new);
 
         this.balloonRepository.deleteByName(name);
 
         return Optional.of(this.balloonRepository.save(new Balloon(name, description, manufacturer)));
+    }
+
+    @Override
+    @Transactional
+    public Optional<Balloon> edit(Long balloonId, String name, String description, Long manufacturerId) {
+        if (balloonId == null)
+            throw new InvalidArgumentsException();
+        if (description == null || description.isEmpty())
+            throw new NoBalloonDescriptionException();
+        Manufacturer manufacturer = this.manufacturerRepository.findById(manufacturerId).orElseThrow(ManufacturerNotFoundException::new);
+
+        Balloon balloon = this.balloonRepository.findById(balloonId).get();
+        balloon.setName(name);
+        balloon.setDescription(description);
+        balloon.setManufacturer(manufacturer);
+
+        return Optional.of(this.balloonRepository.save(balloon));
     }
 
 

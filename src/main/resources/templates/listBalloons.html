@@ -1,4 +1,5 @@
-<section xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<section xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+         xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="d-flex justify-content-center">
         <h2>Choose balloon color</h2>
     </div>
@@ -11,14 +12,15 @@
                 <th scope="col">Balloon Color</th>
                 <th scope="col">Description</th>
                 <th scope="col">Manufacturer</th>
-                <th scope="col" colspan="2" sec:authorize="hasRole('ROLE_ADMIN')" >Actions</th>
+                <th scope="col" colspan="2" sec:authorize="hasRole('ROLE_ADMIN')">Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="balloon : ${balloonList}">
+            <tr th:each="balloon : ${balloonList}" class="balloon">
 
                 <td>
-                    <input th:id="${balloon.getId()}" type="radio" name="color" th:value="${balloon.getName()}"
+                    <input th:id="${balloon.getId()}" type="radio" class="radio-button" name="color"
+                           th:value="${balloon.getName()}"
                            form="selectForm">
                 </td>
 
@@ -27,7 +29,6 @@
                         <th:block th:text="${balloon.getName()} "></th:block>
                     </label>
                 </td>
-
 
                 <td>
                     <th:block th:text="(${balloon.getDescription()})"></th:block>
@@ -39,13 +40,14 @@
 
                 <td sec:authorize="hasRole('ROLE_ADMIN')">
                     <a th:href="@{ '/balloons/edit-form/{id}' (id=${balloon.getId()}) }"
-                       class="btn btn-sm btn-info"><i class="fa fa-trash">Edit</i></a>
+                       class="btn btn-sm btn-info edit-product"><i class="fa fa-trash">Edit</i></a>
                 </td>
 
 
                 <td sec:authorize="hasRole('ROLE_ADMIN')">
                     <form th:action="@{ '/balloons/delete/{id}' (id=${balloon.getId()}) }" th:method="DELETE">
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i>
+                        <button type="submit" class="btn btn-sm btn-danger delete-product"><i
+                                class="fa fa-trash">Delete</i>
                         </button>
                     </form>
                 </td>
@@ -63,7 +65,7 @@
     <div class="col mb-3">
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <input form="selectForm" type="submit" class="btn btn-block btn-success" th:value="Submit">
+                <input form="selectForm" type="submit" class="btn btn-block btn-success submit" th:value="Submit">
             </div>
         </div>
     </div>
@@ -72,7 +74,7 @@
     <div class="col mb-3" sec:authorize="hasRole('ROLE_ADMIN')">
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <a href="/balloons/add-form" class="btn btn-block btn-dark">Add new product</a>
+                <a href="/balloons/add-form" class="btn btn-block btn-dark add-product-btn">Add new product</a>
             </div>
         </div>
     </div>
