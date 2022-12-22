@@ -5,16 +5,16 @@ import mk.finki.ukim.mk.lab.model.Balloon;
 import mk.finki.ukim.mk.lab.model.Manufacturer;
 import mk.finki.ukim.mk.lab.model.exceptions.InvalidArgumentsException;
 import mk.finki.ukim.mk.lab.model.exceptions.ManufacturerNotFoundException;
+import mk.finki.ukim.mk.lab.model.exceptions.NoBalloonDescriptionException;
+import mk.finki.ukim.mk.lab.model.exceptions.NoBalloonNameException;
 import mk.finki.ukim.mk.lab.repository.jpa.BalloonRepository;
 import mk.finki.ukim.mk.lab.repository.jpa.ManufacturerRepository;
 import mk.finki.ukim.mk.lab.service.BalloonService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class BalloonServiceImpl implements BalloonService {
@@ -48,9 +48,19 @@ public class BalloonServiceImpl implements BalloonService {
 
     @Override
     @Transactional
-    public Optional<Balloon> save(String name, String description, Long id) {
-        Manufacturer manufacturer = this.manufacturerRepository.findById(id).orElseThrow(() -> new ManufacturerNotFoundException(id));
+    public Optional<Balloon> save(String name, String description, Long manufacturerId) {
+        if (name == null || name.isEmpty())
+            throw new NoBalloonNameException();
+        if (description == null || description.isEmpty())
+            throw new NoBalloonDescriptionException();
+
+
+//        Manufacturer manufacturer = this.manufacturerRepository.findById(manufacturerId).orElseThrow(() -> new ManufacturerNotFoundException(manufacturerId));
+
+        Manufacturer manufacturer = this.manufacturerRepository.findById(manufacturerId).orElseThrow(ManufacturerNotFoundException::new);
+
         this.balloonRepository.deleteByName(name);
+
         return Optional.of(this.balloonRepository.save(new Balloon(name, description, manufacturer)));
     }
 
