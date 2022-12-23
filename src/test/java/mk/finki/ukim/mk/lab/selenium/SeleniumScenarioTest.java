@@ -2,10 +2,12 @@ package mk.finki.ukim.mk.lab.selenium;
 
 import mk.finki.ukim.mk.lab.model.Balloon;
 import mk.finki.ukim.mk.lab.model.Manufacturer;
+import mk.finki.ukim.mk.lab.model.Role;
 import mk.finki.ukim.mk.lab.model.User;
 import mk.finki.ukim.mk.lab.service.AuthService;
 import mk.finki.ukim.mk.lab.service.BalloonService;
 import mk.finki.ukim.mk.lab.service.ManufacturerService;
+import mk.finki.ukim.mk.lab.service.UserService;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +28,8 @@ public class SeleniumScenarioTest {
     MockMvc mockMvc;
     @Autowired
     AuthService authService;
+    @Autowired
+    UserService userService;
     @Autowired
     BalloonService balloonService;
     @Autowired
@@ -65,7 +69,21 @@ public class SeleniumScenarioTest {
             m1 = manufacturerService.save("m1", "m1", "m1").get();
             m2 = manufacturerService.save("m2", "m2", "m1").get();
 
-            adminUser = authService.register(admin, admin, admin, admin, admin, LocalDate.now());
+            balloonService.save("B1","b1",m1.getId());
+            balloonService.save("B2","b2",m2.getId());
+            balloonService.save("B2","b3",m1.getId());
+            balloonService.save("B3","b4",m2.getId());
+            balloonService.save("B4","b5",m1.getId());
+            balloonService.save("B5","b6",m2.getId());
+            balloonService.save("B6","b7",m1.getId());
+            balloonService.save("B7","b8",m2.getId());
+            balloonService.save("B8","b9",m1.getId());
+            balloonService.save("B9","b9",m2.getId());
+            balloonService.save("B10","b10",m1.getId());
+
+
+
+            adminUser = userService.register(admin, admin, admin, admin, admin, LocalDate.now(), Role.ROLE_ADMIN);
             dataInitialized = true;
         }
     }
@@ -73,23 +91,23 @@ public class SeleniumScenarioTest {
     @Test
     public void testScenario() throws Exception {
         BalloonsPage balloonsPage = BalloonsPage.to(this.driver);
-        balloonsPage.assertElements(0, 0, 0, 0, 0);
+        balloonsPage.assertElements(10, 0, 0, 10, 0);
         LoginPage loginPage = LoginPage.openLogin(this.driver);
 
         balloonsPage = LoginPage.doLogin(this.driver, loginPage, adminUser.getUsername(), admin);
-        balloonsPage.assertElements(0, 0, 0, 0, 1);
+        balloonsPage.assertElements(10, 10, 10, 10, 1);
 
         balloonsPage = AddOrEditBalloon.addBalloon(this.driver, "test", "test", m2.getName());
-        balloonsPage.assertElements(1, 1, 1, 1, 1);
+        balloonsPage.assertElements(11, 11, 11, 11, 1);
 
         balloonsPage = AddOrEditBalloon.addBalloon(this.driver, "test2", "test2", m2.getName());
-        balloonsPage.assertElements(2, 2, 2, 2, 1);
+        balloonsPage.assertElements(12, 12, 12, 12, 1);
 
         balloonsPage.getDeleteButtons().get(1).click();
-        balloonsPage.assertElements(1, 1, 1, 1, 1);
+        balloonsPage.assertElements(11, 11, 11, 11, 1);
 
         balloonsPage = AddOrEditBalloon.editBalloon(this.driver, balloonsPage.getEditButtons().get(0), "test2", "test2", m2.getName());
-        balloonsPage.assertElements(1, 1, 1, 1, 1);
+        balloonsPage.assertElements(11, 11, 11, 11, 1);
 
         LoginPage.logout(this.driver);
         Assert.assertEquals("url do not match", "http://localhost:9999/login", this.driver.getCurrentUrl());
@@ -97,12 +115,12 @@ public class SeleniumScenarioTest {
 
         balloonsPage.getGoToBalloons().click();
         Assert.assertEquals("url do not match", "http://localhost:9999/balloons", this.driver.getCurrentUrl());
-        balloonsPage.assertElements(1, 0, 0, 1, 0);
+        balloonsPage.assertElements(11, 0, 0, 11, 0);
         balloonsPage.getRadioButtons().get(0).click();
 
         balloonsPage.getSubmit().click();
         Assert.assertEquals("url do not match", "http://localhost:9999/selectBalloon", this.driver.getCurrentUrl());
-
-
     }
+
+
 }

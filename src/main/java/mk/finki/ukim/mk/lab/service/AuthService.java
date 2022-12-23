@@ -9,8 +9,10 @@ import java.util.List;
 public interface AuthService {
 
     User login(String username, String password);
-    public User register(String username, String password, String repeatPassword, String name, String surname, LocalDate dateOfBirth);
+//    public User register(String username, String password, String repeatPassword, String name, String surname, LocalDate dateOfBirth);
 
     List<User> listAllUsers();
+
+//    User loadUserByUsername();
 
 }

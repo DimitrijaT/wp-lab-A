@@ -1,9 +1,11 @@
 package mk.finki.ukim.mk.lab.web.controller;
 
 
+import mk.finki.ukim.mk.lab.model.Role;
 import mk.finki.ukim.mk.lab.model.exceptions.InvalidArgumentsException;
 import mk.finki.ukim.mk.lab.model.exceptions.PasswordsDoNotMatchException;
 import mk.finki.ukim.mk.lab.service.AuthService;
+import mk.finki.ukim.mk.lab.service.UserService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +20,10 @@ import java.time.LocalDate;
 @RequestMapping("/register")
 public class RegisterController {
 
-    public final AuthService authService;
+    public final UserService userService;
 
-    public RegisterController(AuthService authService) {
-        this.authService = authService;
+    public RegisterController(UserService authService) {
+        this.userService = authService;
     }
 
     @GetMapping
@@ -42,7 +44,7 @@ public class RegisterController {
                            @RequestParam String surname,
                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth) {
         try {
-            this.authService.register(username, password, repeatedPassword, name, surname, dateOfBirth);
+            this.userService.register(username, password, repeatedPassword, name, surname, dateOfBirth, Role.ROLE_ADMIN);
             return "redirect:/login";
         } catch (PasswordsDoNotMatchException | InvalidArgumentsException exception) {
             return "redirect:/register?error=" + exception.getMessage();
